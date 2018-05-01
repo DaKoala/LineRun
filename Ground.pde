@@ -1,11 +1,11 @@
 class Ground {
-  final static int FAR = -6000;
+  final static int FAR = -11000;
   final static int CLO = 0;
   final static int MID = 0;
-  final static int BTM = 400;
-  final static int LT  = -200;
-  final static int RT  = 200;
-  final static int TP  = -200;
+  final static int BTM = 540;
+  final static int LT  = -480;
+  final static int RT  = 480;
+  final static int TP  = -480;
 
   int left;
   int right;
@@ -21,6 +21,7 @@ class Ground {
   float obstacleCount;
   ArrayList<Gap> changes;
   ArrayList<Obstacle> obstacles;
+  Listener listener;
 
   class Gap {
     float z;
@@ -69,7 +70,7 @@ class Ground {
     }
   }
 
-  Ground() {
+  Ground(Listener _listener) {
     this.left = -width / 2;
     this.right = width / 2;
     this.changes = new ArrayList<Gap>();
@@ -85,11 +86,12 @@ class Ground {
     this.score = 0;
     this.shield = 0;
     this.dead = false;
+    this.listener = _listener;
   }
   
   void tilt() {
-    if (mouseX < 250) this.tiltCoef = this.tiltCoef >= RT ? this.tiltCoef : this.tiltCoef + 10; 
-    else if (mouseX > 550) this.tiltCoef = this.tiltCoef <= LT ? this.tiltCoef : this.tiltCoef - 10;
+    if (this.listener.tilt == -1) this.tiltCoef = this.tiltCoef >= RT ? this.tiltCoef : this.tiltCoef + 10; 
+    else if (this.listener.tilt == 1) this.tiltCoef = this.tiltCoef <= LT ? this.tiltCoef : this.tiltCoef - 10;
     else {
       if (this.tiltCoef != 0) this.tiltCoef = this.tiltCoef > 0 ? this.tiltCoef - 10 : this.tiltCoef + 10;
     }
@@ -101,7 +103,8 @@ class Ground {
   }
   
   void updatePosture() {
-    // TODO 
+    this.foot = this.listener.foot;
+    this.handUp = this.listener.handUp;
   }
   
   void bump() {
@@ -156,7 +159,7 @@ class Ground {
     }
     this.gapCount += this.speed;
     this.obstacleCount += this.speed;
-    if (this.gapCount > 5000) {
+    if (this.gapCount > 10000) {
       Gap tail = this.changes.get(this.changes.size() - 1);
       if (tail.left == LT || tail.right == RT) {
         this.addGap(-width / 2, width / 2);
@@ -168,7 +171,7 @@ class Ground {
       this.gapCount = 0;
     }
     
-    if (this.obstacleCount > 3000) {
+    if (this.obstacleCount > 6000) {
       this.obstacles.add(new Obstacle(FAR, int(random(0, 2)), random(1) > 0.5, random(1) > 0.5));
       this.obstacleCount = 0;
     }
