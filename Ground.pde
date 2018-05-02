@@ -3,9 +3,9 @@ class Ground {
   final static int CLO = 0;
   final static int MID = 0;
   final static int BTM = 540;
-  final static int LT  = -480;
-  final static int RT  = 480;
-  final static int TP  = -480;
+  final static int LT  = -240;
+  final static int RT  = 240;
+  final static int TP  = -240;
 
   int left;
   int right;
@@ -71,8 +71,8 @@ class Ground {
   }
 
   Ground(Listener _listener) {
-    this.left = -width / 2;
-    this.right = width / 2;
+    this.left = -width / 4;
+    this.right = width / 4;
     this.changes = new ArrayList<Gap>();
     this.obstacles = new ArrayList<Obstacle>();
     this.changes.add(new Gap(FAR, this.left, this.right));
@@ -108,7 +108,7 @@ class Ground {
   }
   
   void bump() {
-    this.score += 5;
+    this.score += 10;
     if (this.left == LT || this.right == RT) {
       if (this.foot == 0) this.dead = true;
       if (this.foot != -1 && this.left == LT) this.dead = true;
@@ -162,11 +162,11 @@ class Ground {
     if (this.gapCount > 10000) {
       Gap tail = this.changes.get(this.changes.size() - 1);
       if (tail.left == LT || tail.right == RT) {
-        this.addGap(-width / 2, width / 2);
+        this.addGap(-width / 4, width / 4);
       }
       else {
-        if (random(1) > 0.5) this.addGap(LT, width / 2);
-        else                 this.addGap(-width / 2, RT);
+        if (random(1) > 0.5) this.addGap(LT, width / 4);
+        else                 this.addGap(-width / 4, RT);
       }
       this.gapCount = 0;
     }
@@ -198,8 +198,13 @@ class Ground {
     float z = CLO;
     for (int i = 0; i < this.changes.size(); i++) {
       Gap curr = this.changes.get(i);
+      if (lt == LT) stroke(255, 0, 0);
+      else          stroke(0, 255, 0);
       line(lt, BTM, z, lt, BTM, curr.z);
+      if (rt == RT) stroke(255, 0, 0);
+      else          stroke(0, 255, 0);
       line(rt, BTM, z, rt, BTM, curr.z);
+      stroke(255, 255, 0);
       if      (lt != curr.left) line(lt, BTM, curr.z, curr.left, BTM, curr.z);
       else if (rt != curr.right) line(rt, BTM, curr.z, curr.right, BTM, curr.z);
       lt = curr.left;
@@ -227,7 +232,11 @@ class Ground {
       //}
     }
     Gap tail = this.changes.get(this.changes.size() - 1);
+    if (lt == LT) stroke(255, 0, 0);
+    else          stroke(0, 255, 0);
     line(tail.left, BTM, tail.z, lt, BTM, FAR);
+    if (rt == RT) stroke(255, 0, 0);
+    else          stroke(0, 255, 0);
     line(tail.right, BTM, tail.z, rt, BTM, FAR);
     popStyle();
   }

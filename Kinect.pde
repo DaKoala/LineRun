@@ -94,9 +94,6 @@ void updateKinect() {
       listener.rightShoulderX = joints[KinectPV2.JointType_ShoulderRight].getX();
     }
   }
-
-  fill(255, 0, 0);
-  text(frameRate, 50, 50);
 }
 
 
