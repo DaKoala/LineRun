@@ -16,7 +16,7 @@ void setup() {
   leftHand = loadImage("lefthand.png");
   rightHand = loadImage("righthand.png");
   float cameraZ = (height / 2.0) / tan(FOV / 2.0);
-  perspective(FOV, float(width) / float(height), cameraZ / 10.0, cameraZ * 30.0);
+  perspective(FOV, float(width) / float(height), cameraZ / 10.0, cameraZ * 50.0);
   ground = new Ground(listener);
 }
 
@@ -33,12 +33,12 @@ void draw() {
   text(int(ground.isDead()), 10, 90);
   translate(width / 2, height / 2);
   ground.updatePosture();
-  ground.tilt();
-  println(ground.foot);
+  println("Height: " + ground.heightCoef + "| Vel: " + ground.velY);
+  ground.move();
   ground.bump();
   ground.displayObstacles();
   ground.update();
-  ground.display();
+  ground.displayLine();
   popMatrix();
   
   hint(DISABLE_DEPTH_TEST);
