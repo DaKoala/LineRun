@@ -5,7 +5,6 @@ boolean keyTest = true;
 int stage = 0;
 Ground ground;
 
-
 void setup() {
   size(1920, 1080, P3D);
   setupKinect();
@@ -41,11 +40,22 @@ void draw() {
   }
 
   if (stage == 0) {
-    image(award, 200, 200);
+    instruct(120, 300, award, "Collect it to charge\nthe shield. Raise your\nhand if it is too high.", color(0, 255, 0));
+    instruct(570, 300, block, "Tilt your head to\navoid.", color(255, 0, 0));
+    instruct(920, 300, thorn, "Jump before you\nbump into it.", color(255, 0, 0));
+    instruct(1270, 300, thornTop, "Squat before you\nbump into it.", color(255, 0, 0));
+    instruct(1620, 300, gapImg, "Lift your on the\nside it appears.", color(255, 0, 0));
+    fill(abs(frameCount * 2 % 510 - 255));
+    textSize(72);
+    text("Raise hands to start", 600, 800);
+    if (listener.handUp) {
+      stage = 1;
+    }
   }
 
   if (stage == 1) {
     pushMatrix();
+    println(listener.jump);
     fill(255);
     textSize(36);
     text(ground.score, 10, 30);
@@ -67,4 +77,13 @@ void draw() {
     blendMode(NORMAL); // in terms of other blending modes
     image(poses.get((frameCount / 4) % 7), 0, 0);
   }
+}
+
+void instruct(int x, int y, PImage game, String instruction, color clr) {
+  image(game, x, y);
+  //image(person, x, y + 200);
+  fill(clr);
+  textSize(24);
+  textMode(CORNER);
+  text(instruction, x, y + 220);
 }
