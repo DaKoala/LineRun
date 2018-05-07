@@ -38,7 +38,7 @@ class Ground {
   }
 
   class Obstacle {
-    final static int SIZE = 50;
+    final static int SIZE = 100;
 
     float z;
     int type; // 0 block, 1 award
@@ -46,7 +46,7 @@ class Ground {
     boolean isLeft;
 
     Obstacle(float _z, int _type, boolean _isTop, boolean _isLeft) {
-      this.type = _type;
+      this.type = _type; // 0 block, 1 diamond, 2 ground, 3 top
       this.z = _z;
       this.isTop = _isTop;
       this.isLeft = _isLeft;
@@ -56,18 +56,31 @@ class Ground {
       pushMatrix();
       fill(0, 255);
       noStroke();
-      if (this.isTop && this.type == 1) translate(0, TP, 0);
+      if (this.type == 0 || this.type == 1) {
+        if (this.isTop && this.type == 1) translate(0, TP, 0);
 
-      if (this.isLeft) translate(LT, 0, 0);
-      else             translate(RT, 0, 0);
+        if (this.isLeft) translate(LT, 0, 0);
+        else             translate(RT, 0, 0);
+      }
+      else if (this.type == 2) {
+        translate(0, -2 * TP, 0);
+      }
+      else {
+        translate(0, TP, 0); 
+      }
+
       translate(0, 0, this.z);
+      blendMode(ALPHA); // only for alpha blending
+      blendMode(NORMAL); // in terms of other blending modes
       beginShape();
-      if (type == 0) texture(block);
-      else          texture(award);
+      if (this.type == 0) texture(block);
+      else if (this.type == 1) texture(award);
+      else if (this.type == 2) texture(thorn);
+      else texture(thornTop);
       vertex(-SIZE, -SIZE, 0, 0);
-      vertex(SIZE, -SIZE, 100, 0);
-      vertex(SIZE, SIZE, 100, 100);
-      vertex(-SIZE, SIZE, 0, 100);
+      vertex(SIZE, -SIZE, 200, 0);
+      vertex(SIZE, SIZE, 200, 200);
+      vertex(-SIZE, SIZE, 0, 200);
       endShape();
       popMatrix();
     }
@@ -143,20 +156,27 @@ class Ground {
         this.changes.remove(0);
       }
     }
-    
-    if (this.obstacles.size() > CLO && this.obstacles.get(0).z > 0) {
+
+    if (this.obstacles.size() > 0 && this.obstacles.get(0).z > 0) {
       Obstacle o = obstacles.get(0);
       if (o.type == 0) {
         if ((o.isLeft && this.tiltTo != 1) || (!o.isLeft && this.tiltTo != -1)) {
           this.dead = true;
         }
-      } else {
+      } 
+      else if (o.type == 1) {
         if ((o.isLeft && this.tiltTo != 1) || (!o.isLeft && this.tiltTo != -1)) {
           if ((this.handUp && o.isTop) || !o.isTop) {
             this.shield = this.shield >= 10 ? this.shield : this.shield + 1;
             this.score += 3000;
           }
         }
+      }
+      else if (o.type == 2) {
+        if (this.heightCoef <= 0) this.dead = true;
+      }
+      else {
+        if (this.heightCoef >= -50) this.dead = true;
       }
       this.obstacles.remove(0);
     }
@@ -170,7 +190,7 @@ class Ground {
     this.obstacleCount += this.speed;
     if (this.obstacleCount > 5000) {
       float r = random(1);
-      if (r > 0.5) {
+      if (r > 0.8) {
         if (random(1) > 0.5) {
           this.addGap(FAR, LT, width / 4);
           this.addGap(FAR - 2000, -width / 4, width / 4);
@@ -178,8 +198,9 @@ class Ground {
           this.addGap(FAR, -width / 4, RT);
           this.addGap(FAR - 2000, -width / 4, width / 4);
         }
-      } else {
-        this.obstacles.add(new Obstacle(FAR, int(random(0, 2)), random(1) > 0.5, random(1) > 0.5));
+      } 
+      else {
+        this.obstacles.add(new Obstacle(FAR, int(random(0, 4)), random(1) > 0.5, random(1) > 0.5));
       }
       this.obstacleCount = 0;
     }
