@@ -5,7 +5,7 @@ class Ground {
   final static int BTM = 740;
   final static int LT  = -240;
   final static int RT  = 240;
-  final static int TP  = -240;
+  final static int TP  = -480;
   final static float G   = 0.1;
 
   int left;
@@ -63,7 +63,7 @@ class Ground {
         else             translate(RT, 0, 0);
       }
       else if (this.type == 2) {
-        translate(0, -2 * TP, 0);
+        translate(0, -TP, 0);
       }
       else {
         translate(0, TP, 0); 
@@ -120,6 +120,7 @@ class Ground {
 
     if (this.listener.squad) {
       if (this.heightCoef > -200 && this.heightCoef <= 0) this.velY = -5;
+      else if (this.heightCoef > 0) this.velY -= G;
       else this.velY = 0;
     } else if (this.listener.jump) {
       if (this.heightCoef == 0) this.velY = 8;
