@@ -36,15 +36,15 @@ Run `LineRun.pde` to start.
 
 ### Interface Description
 
-(start)
+![start](https://s1.ax1x.com/2018/05/08/Cd2otA.png)
 
 You can learn different kinds of obstacles here before start. If you are ready, raise either of your hands.
 
-(game)
+![game](https://s1.ax1x.com/2018/05/08/Cd2Ikd.png)
 
 Try your best to avoid obstacles and collect awards!
 
-(end)
+![end](https://s1.ax1x.com/2018/05/08/Cd24TH.png)
 
 You can see the score you get in this game and the highest score record. If you want to play again, raise either of your hands.
 
@@ -71,6 +71,12 @@ You need to squat before bumping into it.
 ![gap](https://s1.ax1x.com/2018/05/08/CdDYr9.png)
 
 You need to lift up the foot corresponding to the side it appears.
+
+## Demo
+
+Please click the image below to view the Demo on Youtube.
+
+[![thumbnail](https://s1.ax1x.com/2018/05/08/Cd2Ikd.png)](https://youtu.be/3b3wvdphNiA)
 
 ## Credit
 
