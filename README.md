@@ -76,7 +76,7 @@ You need to lift up the foot corresponding to the side it appears.
 
 Please click the image below to view the Demo on Youtube.
 
-[![thumbnail](https://s1.ax1x.com/2018/05/08/Cd2Ikd.png)](https://youtu.be/3b3wvdphNiA)
+[![thumbnail](https://s1.ax1x.com/2018/05/08/Cd2Ikd.png)](https://youtu.be/kWc6uvsxn84)
 
 ## Credit
 
