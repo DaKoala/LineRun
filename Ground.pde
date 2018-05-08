@@ -105,10 +105,26 @@ class Ground {
   }
 
   void move() {
-    if (this.listener.tilt == -1) this.tiltCoef = this.tiltCoef >= RT ? this.tiltCoef : this.tiltCoef + 10; 
-    else if (this.listener.tilt == 1) this.tiltCoef = this.tiltCoef <= LT ? this.tiltCoef : this.tiltCoef - 10;
-    else {
-      if (this.tiltCoef != 0) this.tiltCoef = this.tiltCoef > 0 ? this.tiltCoef - 10 : this.tiltCoef + 10;
+    if (this.listener.tilt == -1) {
+      if (this.tiltCoef == 0) {
+        tiltSound.play();
+        tiltSound.rewind();
+      }
+      this.tiltCoef = this.tiltCoef >= RT ? this.tiltCoef : this.tiltCoef + 10;
+    } else if (this.listener.tilt == 1) {
+      if (this.tiltCoef == 0) {
+        tiltSound.play();
+        tiltSound.rewind();
+      }
+      this.tiltCoef = this.tiltCoef <= LT ? this.tiltCoef : this.tiltCoef - 10;
+    } else {
+      if (this.tiltCoef != 0) {
+        if (this.tiltCoef == 200 || this.tiltCoef == -200) {
+          tiltSound.play();
+          tiltSound.rewind();
+        }
+        this.tiltCoef = this.tiltCoef > 0 ? this.tiltCoef - 10 : this.tiltCoef + 10;
+      }
     }
     translate(this.tiltCoef, 0, 0);
 
@@ -117,12 +133,20 @@ class Ground {
     else this.tiltTo = 0;
 
     if (this.listener.squad) {
+      if (this.heightCoef == 0) {
+        squatSound.play();
+        squatSound.rewind();
+      }
+
       if (this.heightCoef > -200 && this.heightCoef <= 0) this.velY = -5;
       else if (this.heightCoef > 0) this.velY -= G;
       else this.velY = 0;
     } else if (this.listener.jump) {
-      if (this.heightCoef == 0) this.velY = 8;
-      else this.velY -= G;
+      if (this.heightCoef == 0) {
+        jumpSound.play();
+        jumpSound.rewind();
+        this.velY = 8;
+      } else this.velY -= G;
     } else {
       if (this.heightCoef >= -200 && this.heightCoef < 0) this.velY = 5;
       else if (this.heightCoef > 0) this.velY -= G;
@@ -135,6 +159,14 @@ class Ground {
   }
 
   void updatePosture() {
+    if (this.foot == 0 && this.listener.foot != 0) {
+      leanSound.play();
+      leanSound.rewind();
+    }
+    if (stage == 1 && !this.handUp && this.listener.handUp) {
+      handUpSound.play();
+      handUpSound.rewind();
+    }
     this.foot = this.listener.foot;
     this.handUp = this.listener.handUp;
   }
@@ -167,6 +199,8 @@ class Ground {
           if ((this.handUp && o.isTop) || !o.isTop) {
             this.shield = this.shield >= 10 ? this.shield : this.shield + 1;
             this.score += 5000;
+            diamondSound.play();
+            diamondSound.rewind();
           }
         }
       } else if (o.type == 2) {
@@ -272,7 +306,14 @@ class Ground {
   }
 
   boolean isDead() {
+    if (this.dead) {
+      bumpSound.play();
+      bumpSound.rewind();
+    }
+
     if (this.dead && this.shield == 5) {
+      shieldSound.play();
+      shieldSound.rewind();
       this.shield = 0;
       this.dead = false;
     }

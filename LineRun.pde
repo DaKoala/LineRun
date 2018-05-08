@@ -1,4 +1,5 @@
 import java.io.FileWriter;
+import ddf.minim.*;
 
 PImage block, award, thorn, thornTop, gapImg;
 PImage jump, lean, oneLeg, squat, reach;
@@ -11,23 +12,50 @@ int stage = 0;
 int highest;
 Ground ground;
 
+Minim minim;
+AudioPlayer jumpSound;
+AudioPlayer bumpSound;
+AudioPlayer tiltSound;
+AudioPlayer squatSound;
+AudioPlayer diamondSound;
+AudioPlayer leanSound;
+AudioPlayer handUpSound;
+AudioPlayer overSound;
+AudioPlayer shieldSound;
+AudioPlayer bgm1;
+AudioPlayer bgm2;
+
 void setup() {
   size(1920, 1080, P3D);
   setupKinect();
   for (int i = 1; i <= 7; i++) {
-    poses.add(loadImage("pose" + i + "_.png"));
+    poses.add(loadImage("images/pose" + i + "_.png"));
   }
-  block = loadImage("block.png");
-  award = loadImage("award.png");
-  thorn = loadImage("thorn.png");
-  thornTop = loadImage("thorn_top.png");
-  gapImg = loadImage("gapImg.png");
-  jump = loadImage("jump.png");
-  lean = loadImage("lean.png");
-  oneLeg = loadImage("one_leg.png");
-  squat = loadImage("squat.png");
-  reach = loadImage("reach.png");
-  title = loadImage("linerun.png");
+  block = loadImage("images/block.png");
+  award = loadImage("images/award.png");
+  thorn = loadImage("images/thorn.png");
+  thornTop = loadImage("images/thorn_top.png");
+  gapImg = loadImage("images/gapImg.png");
+  jump = loadImage("images/jump.png");
+  lean = loadImage("images/lean.png");
+  oneLeg = loadImage("images/one_leg.png");
+  squat = loadImage("images/squat.png");
+  reach = loadImage("images/reach.png");
+  title = loadImage("images/linerun.png");
+  
+  minim = new Minim(this);
+  jumpSound = minim.loadFile("sound/jump.mp3");
+  bumpSound = minim.loadFile("sound/bump.mp3");
+  tiltSound = minim.loadFile("sound/tilt.mp3");
+  squatSound = minim.loadFile("sound/squat.mp3");
+  diamondSound = minim.loadFile("sound/diamond.mp3");
+  leanSound = minim.loadFile("sound/lean.mp3");
+  handUpSound = minim.loadFile("sound/handUp.mp3");
+  overSound = minim.loadFile("sound/over.mp3");
+  shieldSound = minim.loadFile("sound/shield.mp3");
+  bgm1 = minim.loadFile("sound/bgm1.mp3");
+  bgm2 = minim.loadFile("sound/bgm2.mp3");
+  
   float cameraZ = (height / 2.0) / tan(FOV / 2.0);
   perspective(FOV, float(width) / float(height), cameraZ / 10.0, cameraZ * 50.0);
   ground = new Ground(listener);
@@ -44,7 +72,7 @@ void draw() {
 
   updateKinect();
   listener.update();
-  listener.test();
+  //listener.test();
   if (keyTest && keyPressed) {
     if (key == 'w' || key == 'W') listener.jump = true;
     if (key == 's' || key == 'S') listener.squad = true;
@@ -58,6 +86,8 @@ void draw() {
   }
 
   if (stage == 0) {
+    if (!bgm1.isPlaying()) bgm1.play();
+    
     image(title, 550, -180);
     instruct(120, 340, award, reach, "Collect it to charge\nthe shield. Raise your\nhand if it is too high.", color(0, 255, 0));
     instruct(570, 340, block, lean, "Tilt your head to\navoid.", color(255, 0, 0));
@@ -73,10 +103,12 @@ void draw() {
   }
 
   if (stage == 1) {
+    if (bgm1.isPlaying()) bgm1.pause();
+    if (!bgm2.isLooping()) bgm2.loop();
+    
     pushMatrix();
     translate(width / 2, height / 2);
     ground.updatePosture();
-    println("Height: " + ground.heightCoef + "| Vel: " + ground.velY);
     ground.move();
     ground.bump();
     ground.update();
@@ -90,11 +122,18 @@ void draw() {
     image(poses.get((frameCount / 4) % 7), 0, 0);
 
     if (ground.isDead()) {
+      overSound.play();
+      overSound.rewind();
       stage = 2;
     }
   }
 
   if (stage == 2) {
+    if (bgm2.isLooping()) {
+      bgm2.pause();
+      bgm2.rewind();
+    }
+    
     fill(255, 204, 0);
     textSize(90);
     if (ground.score >= highest) {
@@ -123,6 +162,7 @@ void draw() {
     text("Raise hands to play again", 480, 800);
     if (listener.handUp) {
       stage = 1;
+      bgm2.loop();
       ground = new Ground(listener);
     }
   }
