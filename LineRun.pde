@@ -1,8 +1,12 @@
+import java.io.FileWriter;
+
 PImage block, award, thorn, thornTop, gapImg;
 ArrayList<PImage> poses = new ArrayList<PImage>();
+PFont font;
 float FOV = PI / 3;
 boolean keyTest = true;
 int stage = 0;
+int highest;
 Ground ground;
 
 void setup() {
@@ -19,6 +23,12 @@ void setup() {
   float cameraZ = (height / 2.0) / tan(FOV / 2.0);
   perspective(FOV, float(width) / float(height), cameraZ / 10.0, cameraZ * 50.0);
   ground = new Ground(listener);
+
+  font = loadFont("AvenirNext-Heavy-48.vlw");
+  textFont(font);
+
+  String[] lines = loadStrings("highest.txt");
+  highest = parseInt(lines[0]);
 }
 
 void draw() {
@@ -55,13 +65,6 @@ void draw() {
 
   if (stage == 1) {
     pushMatrix();
-    println(listener.jump);
-    fill(255);
-    textSize(36);
-    text(ground.score, 10, 30);
-    text(ground.shield, 10, 60);
-    text(int(ground.isDead()), 10, 90);
-    text(ground.heightCoef, 10, 120);
     translate(width / 2, height / 2);
     ground.updatePosture();
     println("Height: " + ground.heightCoef + "| Vel: " + ground.velY);
@@ -70,12 +73,41 @@ void draw() {
     ground.update();
     ground.displayLine();
     ground.displayObstacles();
-
-
     popMatrix();
+    ground.displayScore();
+    ground.displayShield();
     blendMode(ALPHA); // only for alpha blending
     blendMode(NORMAL); // in terms of other blending modes
     image(poses.get((frameCount / 4) % 7), 0, 0);
+
+    if (ground.isDead()) {
+      stage = 2;
+    }
+  }
+
+  if (stage == 2) {
+    fill(255, 204, 0);
+    textSize(80);
+    if (ground.score >= highest) {
+      text("New record!!!", 480, 300);
+      highest = ground.score;
+      try {
+        FileWriter output = new FileWriter(sketchPath() + "\\data\\highest.txt", false);
+        output.write(str(highest));
+        output.flush();
+        output.close();
+      }
+      catch (IOException e) {
+        println("Could not write into the file!");
+        e.printStackTrace();
+      }
+    } else {
+      text("Better luck next time!", 480, 300);
+    }
+    fill(255);
+    textSize(64);
+    text("Your score: " + ground.score, 480, 400);
+    text("Highest score: " + highest, 480, 500);
   }
 }
 
@@ -84,6 +116,5 @@ void instruct(int x, int y, PImage game, String instruction, color clr) {
   //image(person, x, y + 200);
   fill(clr);
   textSize(24);
-  textMode(CORNER);
   text(instruction, x, y + 220);
 }

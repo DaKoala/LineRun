@@ -61,12 +61,10 @@ class Ground {
 
         if (this.isLeft) translate(LT, 0, 0);
         else             translate(RT, 0, 0);
-      }
-      else if (this.type == 2) {
+      } else if (this.type == 2) {
         translate(0, -TP, 0);
-      }
-      else {
-        translate(0, TP, 0); 
+      } else {
+        translate(0, TP, 0);
       }
 
       translate(0, 0, this.z);
@@ -164,19 +162,16 @@ class Ground {
         if ((o.isLeft && this.tiltTo != 1) || (!o.isLeft && this.tiltTo != -1)) {
           this.dead = true;
         }
-      } 
-      else if (o.type == 1) {
+      } else if (o.type == 1) {
         if ((o.isLeft && this.tiltTo != 1) || (!o.isLeft && this.tiltTo != -1)) {
           if ((this.handUp && o.isTop) || !o.isTop) {
             this.shield = this.shield >= 10 ? this.shield : this.shield + 1;
-            this.score += 3000;
+            this.score += 5000;
           }
         }
-      }
-      else if (o.type == 2) {
+      } else if (o.type == 2) {
         if (this.heightCoef <= 0) this.dead = true;
-      }
-      else {
+      } else {
         if (this.heightCoef >= -50) this.dead = true;
       }
       this.obstacles.remove(0);
@@ -199,8 +194,7 @@ class Ground {
           this.addGap(FAR, -width / 4, RT);
           this.addGap(FAR - 2000, -width / 4, width / 4);
         }
-      } 
-      else {
+      } else {
         this.obstacles.add(new Obstacle(FAR, int(random(0, 4)), random(1) > 0.5, random(1) > 0.5));
       }
       this.obstacleCount = 0;
@@ -257,8 +251,28 @@ class Ground {
     popStyle();
   }
 
+  void displayShield() {
+    stroke(255, 255, 0);
+    fill(0);
+    rect(710, 100, 500, 30);
+    fill(255, 255, 0);
+    rect(710, 100, 100 * this.shield, 30);
+    textSize(36);
+    if (this.shield != 5) {
+      text("Shield charging...", 710, 70);
+    } else {
+      text("Shield online", 710, 70);
+    }
+  }
+
+  void displayScore() {
+    fill(255);
+    textSize(36);
+    text("Score: " + this.score, 10, 30);
+  }
+
   boolean isDead() {
-    if (this.dead && this.shield == 10) {
+    if (this.dead && this.shield == 5) {
       this.shield = 0;
       this.dead = false;
     }
