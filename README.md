@@ -4,7 +4,7 @@
 ![OS](https://img.shields.io/badge/OS-Windows-blue.svg)
 ![license](https://img.shields.io/badge/license-GPL%20v3.0-green.svg)
 
-![logo](https://s1.ax1x.com/2018/05/08/CdDaUx.png)
+![logo](https://s1.ax1x.com/2018/05/08/CdrglF.png)
 
 **An endless running game based on Kinect V2**
 
@@ -64,7 +64,7 @@ You need to tilt your body to avoid it.
 
 You need to jump when you see it. Make sure you do not land before bumping into it.
 
-![thron_top](https://imgchr.com/i/CdDJKJ)
+![thron_top](https://s1.ax1x.com/2018/05/08/CdDJKJ.png)
 
 You need to squat before bumping into it.
 
