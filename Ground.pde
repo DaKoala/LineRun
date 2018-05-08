@@ -175,8 +175,8 @@ class Ground {
     this.score += 10;
     if (this.left == LT || this.right == RT) {
       if (this.foot == 0) this.dead = true;
-      if (this.foot != -1 && this.left == LT) this.dead = true;
-      if (this.foot != 1 && this.right == RT) this.dead = true;
+      else if (this.foot != -1 && this.left == LT) this.dead = true;
+      else if (this.foot != 1 && this.right == RT) this.dead = true;
     }
 
     if (!this.changes.isEmpty()) {
