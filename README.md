@@ -50,7 +50,7 @@ You can see the score you get in this game and the highest score record. If you 
 
 ### Obstacles / Awards
 
-You can change your body direction by tilting your body to left/right. There are totally three directions(left, middle, right). If stands in the middle you will bump obstacles/awards on both sides.
+You can change your body direction by tilting your body to left/right. There are totally three directions(left, middle, right). If stand in the middle you will bump obstacles/awards on both sides.
 
 ![diamond](https://s1.ax1x.com/2018/05/08/CdDd56.png)
 
