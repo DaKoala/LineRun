@@ -197,7 +197,7 @@ class Ground {
       } else if (o.type == 1) {
         if ((o.isLeft && this.tiltTo != 1) || (!o.isLeft && this.tiltTo != -1)) {
           if ((this.handUp && o.isTop) || !o.isTop) {
-            this.shield = this.shield >= 10 ? this.shield : this.shield + 1;
+            this.shield = this.shield >= 5 ? this.shield : this.shield + 1;
             this.score += 5000;
             diamondSound.play();
             diamondSound.rewind();
