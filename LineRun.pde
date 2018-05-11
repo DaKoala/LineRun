@@ -10,6 +10,7 @@ float FOV = PI / 3;
 boolean keyTest = true;
 int stage = 0;
 int highest;
+int back;
 Ground ground;
 
 Minim minim;
@@ -42,7 +43,7 @@ void setup() {
   squat = loadImage("images/squat.png");
   reach = loadImage("images/reach.png");
   title = loadImage("images/linerun.png");
-  
+
   minim = new Minim(this);
   jumpSound = minim.loadFile("sound/jump.mp3");
   bumpSound = minim.loadFile("sound/bump.mp3");
@@ -55,7 +56,7 @@ void setup() {
   shieldSound = minim.loadFile("sound/shield.mp3");
   bgm1 = minim.loadFile("sound/bgm1.mp3");
   bgm2 = minim.loadFile("sound/bgm2.mp3");
-  
+
   float cameraZ = (height / 2.0) / tan(FOV / 2.0);
   perspective(FOV, float(width) / float(height), cameraZ / 10.0, cameraZ * 50.0);
   ground = new Ground(listener);
@@ -87,7 +88,7 @@ void draw() {
 
   if (stage == 0) {
     if (!bgm1.isPlaying()) bgm1.play();
-    
+
     image(title, 550, -180);
     instruct(120, 340, award, reach, "Collect it to charge\nthe shield. Raise your\nhand if it is too high.", color(0, 255, 0));
     instruct(570, 340, block, lean, "Tilt your head to\navoid.", color(255, 0, 0));
@@ -106,7 +107,7 @@ void draw() {
   if (stage == 1) {
     if (bgm1.isPlaying()) bgm1.pause();
     if (!bgm2.isLooping()) bgm2.loop();
-    
+
     pushMatrix();
     translate(width / 2, height / 2);
     ground.updatePosture();
@@ -134,7 +135,7 @@ void draw() {
       bgm2.pause();
       bgm2.rewind();
     }
-    
+    back++;
     fill(255, 204, 0);
     textSize(90);
     if (ground.score >= highest) {
@@ -167,6 +168,12 @@ void draw() {
       bgm2.loop();
       ground = new Ground(listener);
     }
+    if (back >= 300) {
+      back = 0;
+      stage = 0;
+      bgm1.loop();
+      ground = new Ground(listener);
+    }
   }
 }
 
@@ -191,11 +198,11 @@ void adjust(float h) {
     fill(255);
     noStroke();
     rect(768, h, 384, 216);
-    
+
     strokeWeight(3);
     stroke(255, 0, 0);
     rect(945, h + 43, 30, 140);
-    
+
     float bodyWidth = listener.wid / 5;
     float bodyHeight = (listener.bottomY - listener.headY) / 5;
     float startX = 748 + (listener.headX - bodyWidth / 2) / 5;

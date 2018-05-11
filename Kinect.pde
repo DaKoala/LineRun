@@ -68,7 +68,7 @@ class Listener {
     if (upBody > downBody * 1.2) this.squad = true;
     else this.squad = false;
 
-    if (this.pbottomY.get(0) - this.bottomY > this.tall * 0.05 && !this.squad) this.jump = true;
+    if (this.pbottomY.get(0) - this.bottomY > this.tall * 0.04 && !this.squad) this.jump = true;
     else this.jump = false;
     this.pbottomY.remove(0);
     this.pbottomY.add(this.bottomY);
