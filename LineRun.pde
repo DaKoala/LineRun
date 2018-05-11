@@ -96,7 +96,8 @@ void draw() {
     instruct(1620, 340, gapImg, oneLeg, "Lift your leg on\nthe side it\nappears.", color(255, 0, 0));
     fill(abs(frameCount * 2 % 510 - 255));
     textSize(72);
-    text("Raise hands to start", 600, 800);
+    text("Raise hands to start", 600, 1000);
+    adjust();
     if (listener.bothHandsUp) {
       stage = 1;
     }
@@ -174,4 +175,33 @@ void instruct(int x, int y, PImage game, PImage person, String instruction, colo
   fill(clr);
   textSize(24);
   text(instruction, x + 40, y + 220);
+}
+
+void adjust() {
+  pushStyle();
+  fill(255);
+  textSize(30);
+  text("Adjust your body to fit the green box\nto get the best experience", 1180, 800);
+  if (!listener.found) {
+    fill(255, 0, 0);
+    noStroke();
+    rect(768, 700, 384, 216);
+  } else {
+    fill(255);
+    noStroke();
+    rect(768, 700, 384, 216);
+    
+    strokeWeight(3);
+    stroke(0, 255, 0);
+    rect(945, 743, 30, 140);
+    
+    float bodyWidth = listener.wid / 5;
+    float bodyHeight = (listener.bottomY - listener.headY) / 5;
+    float startX = 748 + (listener.headX - bodyWidth / 2) / 5;
+    float startY = 700 + (listener.headY / 5);
+    fill(0, 255, 0, 128);
+    noStroke();
+    rect(startX, startY, bodyWidth, bodyHeight);
+  }
+  popStyle();
 }
