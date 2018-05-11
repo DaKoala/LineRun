@@ -13,6 +13,7 @@ class Listener {
   int foot;
   int tilt;
   boolean handUp;
+  boolean bothHandsUp;
   boolean squad;
   boolean jump;
   
@@ -37,6 +38,7 @@ class Listener {
     this.foot = 0;
     this.tilt = 0;
     this.handUp = false;
+    this.bothHandsUp = false;
     this.squad = false;
   }
   
@@ -51,12 +53,15 @@ class Listener {
     else if (this.leftFootY - this.rightFootY < -this.tall * 0.05) this.foot = -1;
     else this.foot = 0;
     
-    if (this.headX - this.baseX < -this.wid * 0.15) this.tilt = -1;
-    else if (this.headX - this.baseX > this.wid * 0.15) this.tilt = 1;
+    if (this.headX - this.baseX < -this.wid * 0.25) this.tilt = -1;
+    else if (this.headX - this.baseX > this.wid * 0.25) this.tilt = 1;
     else this.tilt = 0;
     
     if (this.leftHandY < this.headY || this.rightHandY < this.headY) this.handUp = true;
     else this.handUp = false;
+    
+    if (this.leftHandY < this.headY && this.rightHandY < this.headY) this.bothHandsUp = true;
+    else this.bothHandsUp = false;
     
     if (upBody > downBody * 1.2) this.squad = true;
     else this.squad = false;

@@ -18,6 +18,7 @@ class Ground {
   int score;
   int shield;
   boolean handUp;
+  boolean bothHandsUp;
   boolean dead;
   float speed;
   float gapCount;
@@ -98,6 +99,7 @@ class Ground {
     this.velY = 0;
     this.foot = 0;
     this.handUp = false;
+    this.bothHandsUp = false;
     this.score = 0;
     this.shield = 0;
     this.dead = false;
@@ -169,6 +171,7 @@ class Ground {
     }
     this.foot = this.listener.foot;
     this.handUp = this.listener.handUp;
+    this.bothHandsUp = this.listener.bothHandsUp;
   }
 
   void bump() {

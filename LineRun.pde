@@ -97,7 +97,7 @@ void draw() {
     fill(abs(frameCount * 2 % 510 - 255));
     textSize(72);
     text("Raise hands to start", 600, 800);
-    if (listener.handUp) {
+    if (listener.bothHandsUp) {
       stage = 1;
     }
   }
@@ -160,7 +160,7 @@ void draw() {
     fill(abs(frameCount * 2 % 510 - 255));
     textSize(72);
     text("Raise hands to play again", 480, 800);
-    if (listener.handUp) {
+    if (listener.bothHandsUp) {
       stage = 1;
       bgm2.loop();
       ground = new Ground(listener);
