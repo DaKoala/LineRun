@@ -97,7 +97,7 @@ void draw() {
     fill(abs(frameCount * 2 % 510 - 255));
     textSize(72);
     text("Raise hands to start", 600, 1000);
-    adjust();
+    adjust(700);
     if (listener.bothHandsUp) {
       stage = 1;
     }
@@ -160,7 +160,8 @@ void draw() {
     text("Highest score: " + highest, 480, 500);
     fill(abs(frameCount * 2 % 510 - 255));
     textSize(72);
-    text("Raise hands to play again", 480, 800);
+    text("Raise hands to play again", 480, 950);
+    adjust(600);
     if (listener.bothHandsUp) {
       stage = 1;
       bgm2.loop();
@@ -177,29 +178,29 @@ void instruct(int x, int y, PImage game, PImage person, String instruction, colo
   text(instruction, x + 40, y + 220);
 }
 
-void adjust() {
+void adjust(float h) {
   pushStyle();
   fill(255);
   textSize(30);
-  text("Adjust your body to fit the green box\nto get the best experience", 1180, 800);
+  text("Adjust your body to fit the red box\nto get the best experience", 1180, h + 100);
   if (!listener.found) {
     fill(255, 0, 0);
     noStroke();
-    rect(768, 700, 384, 216);
+    rect(768, h, 384, 216);
   } else {
     fill(255);
     noStroke();
-    rect(768, 700, 384, 216);
+    rect(768, h, 384, 216);
     
     strokeWeight(3);
-    stroke(0, 255, 0);
-    rect(945, 743, 30, 140);
+    stroke(255, 0, 0);
+    rect(945, h + 43, 30, 140);
     
     float bodyWidth = listener.wid / 5;
     float bodyHeight = (listener.bottomY - listener.headY) / 5;
     float startX = 748 + (listener.headX - bodyWidth / 2) / 5;
-    float startY = 700 + (listener.headY / 5);
-    fill(0, 255, 0, 128);
+    float startY = h + (listener.headY / 5);
+    fill(0, 255, 0, 200);
     noStroke();
     rect(startX, startY, bodyWidth, bodyHeight);
   }
